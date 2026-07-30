@@ -1,0 +1,41 @@
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        
+        int maxArea = 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                // When we find a part of an island, calculate its area
+                if (grid[i][j] == 1) {
+                    maxArea = Math.max(maxArea, dfs(grid, i, j));
+                }
+            }
+        }
+        
+        return maxArea;
+    }
+    
+    private int dfs(int[][] grid, int r, int c) {
+        // Base case: check boundaries and whether the cell is water (0)
+        if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0) {
+            return 0;
+        }
+        
+        // Mark the current cell as visited by changing it to 0
+        grid[r][c] = 0;
+        
+        // Count the current cell (1) plus the area of its 4 surrounding directions
+        int area = 1;
+        area += dfs(grid, r + 1, c); // Down
+        area += dfs(grid, r - 1, c); // Up
+        area += dfs(grid, r, c + 1); // Right
+        area += dfs(grid, r, c - 1); // Left
+        
+        return area;
+    }
+}
